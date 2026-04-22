@@ -20,3 +20,6 @@ mongoose.connect(process.env.MONGO_URI)
 
 // Server Start
 app.listen(5000, () => console.log("Server running on port 5000"));
+app.get("/", (req, res) => {
+  res.send("Expense Manager API is running 🚀");
+});
