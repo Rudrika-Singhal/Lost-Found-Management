@@ -2,7 +2,6 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-require("dotenv").config();
 
 const app = express();
 
@@ -11,15 +10,17 @@ app.use(express.json());
 
 // Routes
 app.use("/api/auth", require("./routes/authRoutes"));
-app.use("/api/expense", require("./routes/expenseRoutes"));
+app.use("/api/items", require("./routes/itemRoutes"));
 
-// DB Connection
+// DB
 mongoose.connect(process.env.MONGO_URI)
-.then(() => console.log("MongoDB Connected"))
-.catch(err => console.log(err));
+  .then(() => console.log("MongoDB Connected"))
+  .catch(err => console.log(err));
 
-// Server Start
-app.listen(5000, () => console.log("Server running on port 5000"));
+// Test route
 app.get("/", (req, res) => {
-  res.send("Expense Manager API is running 🚀");
+  res.send("Lost & Found API is running 🚀");
 });
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

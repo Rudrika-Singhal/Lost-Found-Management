@@ -1,87 +1,47 @@
-import axios from "axios";
 import { useState } from "react";
+import axios from "axios";
+import { useNavigate, Link } from "react-router-dom";
+import "../App.css";
+
+const API = "http://localhost:5000";
 
 export default function Login() {
-  const [form, setForm] = useState({});
+  const [form, setForm] = useState({ email: "", password: "" });
+  const navigate = useNavigate();
 
-  const login = async () => {
-    if (!form.email || !form.password) {
-      return alert("Fill all fields");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await axios.post(`${API}/api/auth/login`, form);
+      localStorage.setItem("token", res.data.token);
+      navigate("/dashboard");
+    } catch {
+      alert("Invalid credentials ❌");
     }
-
-    const res = await axios.post("https://expense-manager-4-tv3q.onrender.com/api/auth/login", form);
-    localStorage.setItem("token", res.data.token);
-    window.location.href = "/dashboard";
   };
 
   return (
-    <div style={container}>
-      <div style={card}>
-        <h2>Welcome Back</h2>
+    <div className="auth-container">
+      <div className="auth-card">
+        <h2>Login</h2>
 
-        <input
-          placeholder="Email"
-          style={input}
-          onChange={e => setForm({ ...form, email: e.target.value })}
-        />
+        <form onSubmit={handleSubmit}>
+          <input placeholder="Email"
+            value={form.email}
+            onChange={e => setForm({...form, email:e.target.value})}
+          />
 
-        <input
-          type="password"
-          placeholder="Password"
-          style={input}
-          onChange={e => setForm({ ...form, password: e.target.value })}
-        />
+          <input type="password" placeholder="Password"
+            value={form.password}
+            onChange={e => setForm({...form, password:e.target.value})}
+          />
 
-        <button onClick={login} style={btn}>Login</button>
+          <button>Login</button>
+        </form>
 
-        <p>
-          Don't have an account?{" "}
-          <span style={link} onClick={() => window.location.href = "/"}>
-            Register
-          </span>
-        </p>
+        <Link to="/register">Create Account</Link>
       </div>
     </div>
   );
 }
-
-// Styles
-const container = {
-  height: "100vh",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  background: "#f5f7fa"
-};
-
-const card = {
-  background: "#fff",
-  padding: "30px",
-  borderRadius: "10px",
-  width: "300px",
-  boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
-  textAlign: "center"
-};
-
-const input = {
-  width: "100%",
-  padding: "10px",
-  margin: "10px 0",
-  borderRadius: "5px",
-  border: "1px solid #ccc"
-};
-
-const btn = {
-  width: "100%",
-  padding: "10px",
-  background: "#1890ff",
-  color: "#fff",
-  border: "none",
-  borderRadius: "5px",
-  cursor: "pointer"
-};
-
-const link = {
-  color: "#1890ff",
-  cursor: "pointer"
-};
