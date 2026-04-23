@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import "../App.css";
 
-const API = "http://localhost:5000";
+const API = "https://lost-found-management-5.onrender.com";
 
 export default function Dashboard() {
   const [items, setItems] = useState([]);

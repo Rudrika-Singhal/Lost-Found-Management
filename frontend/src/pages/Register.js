@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import "../App.css";
 
-const API = "http://localhost:5000";
+const API = "https://lost-found-management-5.onrender.com";
 
 export default function Register() {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
